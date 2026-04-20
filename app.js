@@ -276,7 +276,7 @@ async function generatePaymentQRIS() {
 // FUNGSI UNTUK KIRIM PESAN FINAL KE WHATSAPP
 function finalizeToWA() {
     const grandTotal = subtotalCart + currentOngkir;
-    const nomorAdmin = "6281234567890"; // GANTI DENGAN NOMOR WA ANDA
+    const nomorAdmin = "6289686000405"; // GANTI DENGAN NOMOR WA ANDA
     
     let pesanWA = `*KONFIRMASI PEMBAYARAN DEINSA*\n`;
     pesanWA += `--------------------------------\n`;
