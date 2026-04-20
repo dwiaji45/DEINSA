@@ -215,38 +215,82 @@ async function checkShippingCost() {
     }
 }
 
-// === FINALISASI PESANAN ===
-function finalizeOrderWA() {
+// Variabel untuk menyimpan data pesanan sementara
+let activeOrderId = "";
+
+// FUNGSI UNTUK MEMBUAT PESANAN & GENERATE QRIS
+async function generatePaymentQRIS() {
     const alamat = document.getElementById('alamatLengkap').value;
     const kotaNama = document.getElementById('kotaSelect').options[document.getElementById('kotaSelect').selectedIndex].text;
     const provNama = document.getElementById('provinsiSelect').options[document.getElementById('provinsiSelect').selectedIndex].text;
-    const kurir = document.getElementById('kurirSelect').value.toUpperCase();
     const grandTotal = subtotalCart + currentOngkir;
-    
-    if(!alamat) { alert("Mohon lengkapi alamat jalan/detail!"); return; }
 
-    const userName = localStorage.getItem('user_name') || 'Pelanggan';
+    if (!alamat || alamat.length < 10) {
+        alert("Mohon isi alamat lengkap (minimal 10 karakter).");
+        return;
+    }
+
+    // Tampilkan loading pada tombol
+    const btn = document.getElementById('btnBayarSekarang');
+    btn.innerText = "Menciptakan QRIS...";
+    btn.disabled = true;
+
+    const payload = {
+        action: 'checkout',
+        nama: localStorage.getItem('user_name') || 'Pelanggan',
+        items: cart,
+        total: grandTotal,
+        alamat: `${alamat}, ${kotaNama}, ${provNama}`
+    };
+
+    try {
+        // Kirim data ke GAS (doPost)
+        const response = await fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            activeOrderId = result.orderId;
+            // Tampilkan Gambar QRIS
+            document.getElementById('qrisImage').src = result.qrisUrl;
+            
+            // Switch Tampilan Modal
+            document.getElementById('checkoutFormStep').style.display = 'none';
+            document.getElementById('qrisDisplaySection').style.display = 'block';
+        } else {
+            alert("Gagal membuat QRIS. Silakan coba lagi.");
+            btn.innerText = "PROSES PEMBAYARAN";
+            btn.disabled = false;
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi gangguan koneksi ke server.");
+        btn.innerText = "PROSES PEMBAYARAN";
+        btn.disabled = false;
+    }
+}
+
+// FUNGSI UNTUK KIRIM PESAN FINAL KE WHATSAPP
+function finalizeToWA() {
+    const grandTotal = subtotalCart + currentOngkir;
+    const nomorAdmin = "6281234567890"; // GANTI DENGAN NOMOR WA ANDA
     
-    let pesanWA = `Halo Admin DEINSA, saya *${userName}* ingin memesan:\n\n`;
-    cart.forEach((item, index) => {
-        pesanWA += `${index + 1}. ${item.nama} - Rp ${item.harga.toLocaleString('id-ID')}\n`;
-    });
-    
-    pesanWA += `\n*Subtotal: Rp ${subtotalCart.toLocaleString('id-ID')}*\n`;
-    pesanWA += `*Ongkir (${kurir}): Rp ${currentOngkir.toLocaleString('id-ID')}*\n`;
-    pesanWA += `*TOTAL BAYAR: Rp ${grandTotal.toLocaleString('id-ID')}*\n\n`;
-    pesanWA += `*Alamat Pengiriman:*\n${alamat}\n${kotaNama}, ${provNama}\n\n`;
-    pesanWA += `Mohon info rekening pembayaran. Terima kasih.`;
-    
-    const nomorAdmin = "6289686000405"; // Ganti Nomor Anda
+    let pesanWA = `*KONFIRMASI PEMBAYARAN DEINSA*\n`;
+    pesanWA += `--------------------------------\n`;
+    pesanWA += `Order ID: ${activeOrderId}\n`;
+    pesanWA += `Nama: ${localStorage.getItem('user_name')}\n`;
+    pesanWA += `Total: *Rp ${grandTotal.toLocaleString('id-ID')}*\n`;
+    pesanWA += `Status: *Sudah Scan QRIS*\n\n`;
+    pesanWA += `Mohon segera diproses ya Min. Terima kasih!`;
+
     window.open(`https://wa.me/${nomorAdmin}?text=${encodeURIComponent(pesanWA)}`, '_blank');
     
-    // Backup ke Sheet
-    saveOrderHistory(cart, grandTotal);
-    
-    // Reset
+    // Selesai, reset keranjang
     cart = [];
     localStorage.removeItem('tempCart');
     document.getElementById('cartCount').innerText = 0;
-    closeModal();
+    location.reload(); // Refresh halaman untuk membersihkan status
 }
