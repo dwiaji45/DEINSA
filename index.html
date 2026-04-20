@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>DEINSA - Katalog Produk</title>
     <style>
         /* Mengimplementasikan Warna Nuansa Sesuai Blueprint */
@@ -217,26 +218,58 @@
             cursor: pointer;
         }
 
-        /* Footer */
+        /* Footer Baru */
         footer {
             background-color: var(--dark-forest);
             color: var(--white);
-            padding: 2rem 5rem;
+            padding: 2.5rem 5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             position: relative;
             overflow: hidden;
+            border-top-left-radius: 20px; /* Sudut membulat di bagian atas */
+            border-top-right-radius: 20px;
         }
 
         .footer-left p, .footer-right p {
-            margin: 0.3rem 0;
+            margin: 0.4rem 0;
             color: #DDE2DF;
         }
 
+        .footer-left .brand-title {
+            font-weight: bold;
+            color: var(--white);
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
         .footer-right {
-            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            z-index: 1; /* Memastikan teks di atas ilustrasi bintang */
+        }
+
+        /* Desain Tombol Instagram */
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         /* Dekorasi Bintang di Footer */
@@ -244,10 +277,17 @@
             position: absolute;
             right: -20px;
             bottom: -20px;
-            opacity: 0.5;
-            width: 100px;
+            opacity: 0.3;
+            width: 120px;
+            z-index: 0;
+            pointer-events: none; /* Agar tidak mengganggu klik */
         }
 
+        /* Update di bagian Responsive (tambahkan ini di dalam @media max-width: 768px) */
+        @media (max-width: 768px) {
+            footer { padding: 2rem; flex-direction: column; text-align: center; gap: 1.5rem; border-radius: 0; }
+            .footer-right { align-items: center; }
+        }
         /* Responsive */
         @media (max-width: 768px) {
             .hero { flex-direction: column; }
@@ -280,7 +320,7 @@
             <a href="#">Koleksi</a>
             <a href="#">Tentang Kami</a>
             <a href="#">Kontak</a>
-            <a href="#" class="wa-icon">💬</a> 
+            <a href="http://wa.me/6289686000405?text=halo%20Admin%20DEINSA%20%F0%9F%91%8B" class="wa-icon" target="_blank" style="color: #2B3A2F;"><i class="fa fa-whatsapp"></i></a> 
         </nav>
     </header>
 
@@ -289,47 +329,13 @@
             <div class="hero-img"></div>
             <div class="hero-content">
                 <h2>DEINSA</h2>
-                <p>Koleksi Pakaian Muslim Pilihan di Bantul.<br>Adem, Nyaman, & Elegan.</p>
+                <p>Koleksi Pakaian Muslim Pilihan.<br>Adem, Nyaman, & Elegan.</p>
                 <button class="btn-primary">Lihat Koleksi</button>
             </div>
         </section>
 
         <section class="products-section">
             <h3>Produk Terbaru</h3>
-            
-            <div id="productContainer" class="product-grid">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1595015383569-87c126ec86eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Gamis">
-                    <div class="card-content">
-                        <p class="card-title">Gamis Rayon Premium</p>
-                        <div class="card-action">
-                            <p class="card-price">Rp 185.000</p>
-                            <button class="btn-wa">Beli via WA</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1620803450974-9f9b5a0340f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Mukena">
-                    <div class="card-content">
-                        <p class="card-title">Mukena Exclusive</p>
-                        <div class="card-action">
-                            <p class="card-price">Rp 210.000</p>
-                            <button class="btn-wa">Beli via WA</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1620794951167-73595604473b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Koko">
-                    <div class="card-content">
-                        <p class="card-title">Koko Modern</p>
-                        <div class="card-action">
-                            <p class="card-price">Rp 210.000</p>
-                            <button class="btn-wa">Beli via WA</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div id="skeletonContainer" class="product-grid" style="display: none;">
                 <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div></div>
                 <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div></div>
@@ -340,16 +346,20 @@
 
     <footer>
         <div class="footer-left">
-            <p style="font-weight: bold; color: var(--white); margin-bottom: 0.5rem;">DEINSA - Kurator Fashion Muslim Bantul</p>
-            <p>© 2024 DEINSA Official. All Rights Reserved.</p>
+            <p style="font-weight: bold; color: var(--white); margin-bottom: 0.5rem;">DEINSA - Fashion Muslim</p>
+            <p>© 2026 DEINSA Official. All Rights Reserved.</p>
         </div>
         <div class="footer-right">
-            <p style="margin-bottom: 0.5rem;">Bantul, Yogyakarta</p>
-            <p>𝕏 @DEINSA.Official &nbsp; 𝕏 @DEINSA.Official &nbsp; 🎵 @DEINSA.Official</p>
+            <p>Bantul, Yogyakarta</p>
+            <a href="https://instagram.com/DEINSAOfficial" target="_blank" class="social-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @DEINSAOfficial
+            </a>
         </div>
-        <svg class="footer-star" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 0 C50 27.614 27.614 50 0 50 C27.614 50 50 72.386 50 100 C50 72.386 72.386 50 100 50 C72.386 50 50 27.614 50 0 Z" fill="#EFEAE1"/>
-        </svg>
     </footer>
 
     <script src="app.js"></script>
