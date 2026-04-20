@@ -93,16 +93,17 @@ function closeModal() {
     document.getElementById('checkoutModal').style.display = 'none';
 }
 
-// === FUNGSI RAJAONGKIR (VIA GAS PROXY) ===
+// === FUNGSI RAJAONGKIR (VIA GAS PROXY) DENGAN ANTI-CACHE ===
 async function loadProvinces() {
     document.getElementById('provinsiSelect').innerHTML = '<option>Memuat provinsi...</option>';
     try {
-        const response = await fetch(GAS_URL + '?action=provinces');
+        const noCache = new Date().getTime();
+        const response = await fetch(GAS_URL + '?action=provinces&t=' + noCache);
         const data = await response.json();
         
         // Pengecekan keamanan: Jika GAS belum di-deploy ulang, data.rajaongkir tidak akan ada
         if (!data.rajaongkir) {
-            throw new Error("Format respons salah. Pastikan GAS di-deploy sebagai 'New Version'.");
+            throw new Error("Format respons salah. Browser masih membaca cache lama atau GAS belum di-deploy sebagai 'New Version'.");
         }
 
         const provinces = data.rajaongkir.results;
@@ -112,7 +113,7 @@ async function loadProvinces() {
     } catch(e) { 
         console.error("Error load province", e); 
         document.getElementById('provinsiSelect').innerHTML = '<option value="">Gagal memuat. Coba lagi.</option>';
-        alert("Gagal memuat provinsi! Periksa kembali URL GAS atau pastikan sudah di-deploy ulang sebagai 'New Version'.");
+        alert("Gagal memuat provinsi! Terjadi masalah cache atau URL GAS salah.");
     }
 }
 
@@ -126,7 +127,8 @@ async function loadCities() {
     kotaSelect.innerHTML = '<option>Memuat kota...</option>';
     
     try {
-        const response = await fetch(GAS_URL + `?action=cities&provId=${provId}`);
+        const noCache = new Date().getTime();
+        const response = await fetch(GAS_URL + `?action=cities&provId=${provId}&t=${noCache}`);
         const data = await response.json();
         const cities = data.rajaongkir.results;
         
@@ -156,7 +158,8 @@ async function checkShippingCost() {
     btnBayar.disabled = true;
 
     try {
-        const response = await fetch(GAS_URL + `?action=cost&destination=${destId}&weight=${totalWeight}&courier=${courier}`);
+        const noCache = new Date().getTime();
+        const response = await fetch(GAS_URL + `?action=cost&destination=${destId}&weight=${totalWeight}&courier=${courier}&t=${noCache}`);
         const data = await response.json();
         
         // Mengambil tarif pertama (REG/Reguler)
