@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEINSA - Katalog Produk</title>
     <style>
-        /* Mengimplementasikan Warna Nuansa Sesuai Blueprint */
+        /* --- TEMA WARNA BARU SESUAI GAMBAR --- */
         :root {
-            --sage-green: #A3B18A;
-            --beige-cream: #DAD7CD;
-            --dark-forest: #344E41;
-            --off-white: #F9F9F6;
+            --sage-green: #7A9374;
+            --beige-cream: #EBE6D9;
+            --dark-forest: #2C4032;
+            --off-white: #F7F6F1;
             --white: #FFFFFF;
+            --text-gray: #555555;
         }
 
         body {
@@ -22,105 +23,281 @@
             padding: 0;
         }
 
-        /* Navbar: Latar Putih, Teks Hijau Tua */
+        /* --- NAVBAR --- */
         header {
-            background-color: var(--white);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background-color: transparent;
+            padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         header h1 {
             color: var(--dark-forest);
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             letter-spacing: 1px;
+            font-weight: 800;
         }
 
-        /* Tombol Keranjang / WA */
-        .btn-checkout {
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-forest);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a.active {
+            background-color: var(--beige-cream);
+        }
+
+        .nav-links a:hover:not(.active) {
+            opacity: 0.7;
+        }
+
+        /* Tombol Keranjang Bawaan Anda (Desain Disesuaikan) */
+        .nav-cart-btn {
+            background-color: var(--white);
+            color: var(--dark-forest);
+            border: 1.5px solid var(--sage-green);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-cart-btn:hover {
+            background-color: var(--sage-green);
+            color: var(--white);
+        }
+
+        /* Ikon WA */
+        .wa-icon {
+            width: 35px;
+            height: 35px;
+            border: 1.5px solid var(--sage-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sage-green);
+            padding: 0 !important;
+        }
+        
+        .wa-icon:hover {
+            background-color: var(--sage-green);
+            color: var(--white) !important;
+        }
+
+        /* --- STRUKTUR UTAMA --- */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem 1rem;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--beige-cream);
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .hero-img {
+            flex: 1;
+            min-height: 350px;
+            background-image: url('https://images.unsplash.com/photo-1589465885855-40073e207065?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-content h2 {
+            font-size: 2.8rem;
+            margin: 0 0 1rem 0;
+            color: var(--dark-forest);
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+            margin: 0 0 2rem 0;
+        }
+
+        .btn-hero {
             background-color: var(--sage-green);
             color: var(--white);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
             font-weight: bold;
             cursor: pointer;
+            width: max-content;
             transition: background-color 0.3s;
         }
 
-        .btn-checkout:hover {
+        .btn-hero:hover {
             background-color: var(--dark-forest);
         }
 
-        /* Container Produk */
+        /* --- SECTION PRODUK --- */
+        .products-section {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .products-section h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            color: var(--dark-forest);
+        }
+
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: auto;
+            gap: 1.5rem;
         }
 
-        /* Product Card */
+        /* Desain Card & Tombol Dinamis app.js */
         .card {
             background-color: var(--white);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid var(--beige-cream);
+            border: 1px solid #EEEEEE;
             transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
         }
 
         .card img {
             width: 100%;
-            height: 250px;
+            height: 280px;
             object-fit: cover;
-            /* Latar belakang jika gambar belum load */
             background-color: var(--beige-cream); 
         }
 
         .card-content {
-            padding: 1rem;
+            padding: 1.2rem;
         }
 
         .card-title {
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1rem;
             margin: 0 0 0.5rem 0;
+            color: var(--dark-forest);
         }
 
         .card-price {
             color: var(--sage-green);
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
             margin-bottom: 1rem;
         }
 
-        /* Skeleton Loader UI */
+        /* Menimpa styling tombol bawaan app.js Anda agar lebih cantik */
+        .btn-checkout {
+            background-color: var(--off-white);
+            color: var(--dark-forest) !important;
+            border: 1px solid var(--beige-cream) !important;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--sage-green);
+            color: var(--white) !important;
+            border-color: var(--sage-green) !important;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--dark-forest);
+            color: var(--white);
+            padding: 3rem 5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        .footer-left p, .footer-right p {
+            margin: 0.3rem 0;
+            color: #DDE2DF;
+        }
+        
+        .footer-left .brand-bold {
+            font-weight: bold;
+            color: var(--white);
+            font-size: 0.95rem;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        /* --- SKELETON BAWAAN ANDA --- */
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
         }
-        
-        .skeleton-img { height: 250px; width: 100%; }
-        .skeleton-text { height: 20px; width: 80%; margin: 10px 15px; border-radius: 4px; }
-        .skeleton-btn { height: 35px; width: 90%; margin: 10px 15px; border-radius: 5px; }
-
+        .skeleton-img { height: 280px; width: 100%; }
+        .skeleton-text { height: 18px; width: 80%; margin: 10px 15px; border-radius: 4px; }
+        .skeleton-btn { height: 35px; width: 90%; margin: 10px 15px; border-radius: 20px; }
         @keyframes loading {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; }
+            .hero-img { min-height: 250px; }
+            header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            footer { padding: 2rem; flex-direction: column; text-align: center; gap: 1.5rem; }
+            .footer-right { text-align: center; }
         }
     </style>
 </head>
@@ -128,63 +305,108 @@
 
     <header>
         <h1>DEINSA</h1>
-        <button class="btn-checkout" id="checkoutBtn" onclick="handleCheckoutMiddleware()">🛒 Keranjang (<span id="cartCount">0</span>)</button>
+        <nav class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#">Koleksi</a>
+            <a href="#">Tentang Kami</a>
+            <a href="#">Kontak</a>
+            
+            <button class="nav-cart-btn" id="checkoutBtn" onclick="handleCheckoutMiddleware()">
+                🛒 Keranjang (<span id="cartCount">0</span>)
+            </button>
+            
+            <a href="#" class="wa-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.46 14.1c-.26.74-1.52 1.41-2.11 1.48-.54.07-1.22.13-3.66-.88-2.95-1.22-4.85-4.25-5-4.45-.14-.2-1.2-1.59-1.2-3.04 0-1.45.75-2.17 1.02-2.47.27-.3.59-.37.79-.37.2 0 .4 0 .57.01.2.01.48-.07.75.56.27.65.93 2.26 1.01 2.42.08.17.14.36.03.56-.1.2-.16.32-.32.51-.16.2-.34.42-.48.56-.16.16-.33.33-.14.65.2.33.88 1.44 1.89 2.33 1.3 1.15 2.39 1.5 2.73 1.66.33.16.53.14.73-.08.2-.23.86-1 1.09-1.35.23-.34.46-.28.76-.17.3.1 1.89.89 2.22 1.06.33.17.55.25.63.4.08.14.08.83-.18 1.57z"/>
+                </svg>
+            </a>
+        </nav>
     </header>
 
-    <div id="skeletonContainer" class="product-grid">
-        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
-        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
-        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
-        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
-    </div>
+    <main>
+        <section class="hero">
+            <div class="hero-img"></div>
+            <div class="hero-content">
+                <h2>DEINSA</h2>
+                <p>Koleksi Pakaian Muslim Pilihan di Bantul.<br>Adem, Nyaman, & Elegan.</p>
+                <button class="btn-hero">Lihat Koleksi</button>
+            </div>
+        </section>
 
-    <div id="productContainer" class="product-grid" style="display: none;"></div>
+        <section class="products-section">
+            <h3>Produk Terbaru</h3>
+
+            <div id="skeletonContainer" class="product-grid">
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+            </div>
+
+            <div id="productContainer" class="product-grid" style="display: none;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <p class="brand-title">DEINSA - Kurator Fashion Muslim Bantul</p>
+            <p>© 2026 DEINSA Official. All Rights Reserved.</p>
+        </div>
+        
+        <div class="footer-right">
+            <p>Bantul, Yogyakarta</p>
+            <a href="https://instagram.com/DEINSAOfficial" target="_blank" class="social-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>DEINSAOfficial
+            </a>
+        </div>
+    </footer>
 
     <script src="app.js"></script>
-<div id="checkoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
-    <div style="background: white; padding: 2rem; border-radius: 15px; width: 90%; max-width: 450px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
-        <h2 style="color: var(--dark-forest); margin-top: 0; text-align: center;">Checkout</h2>
-        
-        <div id="checkoutFormStep">
-            <div id="cartItemsList" style="margin-bottom: 1rem; font-size: 0.85rem; background: #f9f9f9; padding: 10px; border-radius: 8px;"></div>
-            
-            <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Alamat Pengiriman</h3>
-            <textarea id="alamatLengkap" placeholder="Nama Jalan, No Rumah, RT/RW..." style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream); box-sizing: border-box;"></textarea>
-            
-            <select id="provinsiSelect" onchange="loadCities()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);"></select>
-            <select id="kotaSelect" onchange="enableCourier()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);" disabled></select>
-            <select id="kurirSelect" onchange="checkShippingCost()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);" disabled>
-                <option value="">Pilih Kurir...</option>
-                <option value="jne">JNE (Reguler)</option>
-                <option value="pos">POS Indonesia</option>
-                <option value="tiki">TIKI</option>
-            </select>
 
-            <div id="summarySection" style="background: var(--off-white); padding: 15px; border-radius: 10px; margin-top: 10px;">
-                <div style="display: flex; justify-content: space-between;"><span>Subtotal:</span> <span>Rp <span id="subtotalDisplay">0</span></span></div>
-                <div style="display: flex; justify-content: space-between;"><span>Ongkir:</span> <span>Rp <span id="ongkirDisplay">0</span></span></div>
-                <hr>
-                <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--dark-forest);"><span>Total Bayar:</span> <span>Rp <span id="grandTotalDisplay">0</span></span></div>
+    <div id="checkoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+        <div style="background: white; padding: 2rem; border-radius: 15px; width: 90%; max-width: 450px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+            <h2 style="color: var(--dark-forest); margin-top: 0; text-align: center;">Checkout</h2>
+            
+            <div id="checkoutFormStep">
+                <div id="cartItemsList" style="margin-bottom: 1rem; font-size: 0.85rem; background: #f9f9f9; padding: 10px; border-radius: 8px;"></div>
+                
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Alamat Pengiriman</h3>
+                <textarea id="alamatLengkap" placeholder="Nama Jalan, No Rumah, RT/RW..." style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream); box-sizing: border-box;"></textarea>
+                
+                <select id="provinsiSelect" onchange="loadCities()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);"></select>
+                <select id="kotaSelect" onchange="enableCourier()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);" disabled></select>
+                <select id="kurirSelect" onchange="checkShippingCost()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);" disabled>
+                    <option value="">Pilih Kurir...</option>
+                    <option value="jne">JNE (Reguler)</option>
+                    <option value="pos">POS Indonesia</option>
+                    <option value="tiki">TIKI</option>
+                </select>
+
+                <div id="summarySection" style="background: var(--off-white); padding: 15px; border-radius: 10px; margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between;"><span>Subtotal:</span> <span>Rp <span id="subtotalDisplay">0</span></span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>Ongkir:</span> <span>Rp <span id="ongkirDisplay">0</span></span></div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--dark-forest);"><span>Total Bayar:</span> <span>Rp <span id="grandTotalDisplay">0</span></span></div>
+                </div>
+
+                <button onclick="generatePaymentQRIS()" id="btnBayarSekarang" style="width: 100%; margin-top: 15px; padding: 12px; background: var(--sage-green); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" disabled>PROSES PEMBAYARAN</button>
             </div>
 
-            <button onclick="generatePaymentQRIS()" id="btnBayarSekarang" style="width: 100%; margin-top: 15px; padding: 12px; background: var(--sage-green); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" disabled>PROSES PEMBAYARAN</button>
-        </div>
-
-        <div id="qrisDisplaySection" style="display: none; text-align: center; animation: fadeIn 0.5s;">
-            <p style="font-weight: bold; color: var(--dark-forest);">Silakan Scan QRIS Berikut:</p>
-            <div style="background: white; padding: 10px; border: 2px solid var(--beige-cream); border-radius: 10px; display: inline-block;">
-                <img id="qrisImage" src="" alt="QRIS Barcode" style="width: 250px; height: 250px;">
+            <div id="qrisDisplaySection" style="display: none; text-align: center; animation: fadeIn 0.5s;">
+                <p style="font-weight: bold; color: var(--dark-forest);">Silakan Scan QRIS Berikut:</p>
+                <div style="background: white; padding: 10px; border: 2px solid var(--beige-cream); border-radius: 10px; display: inline-block;">
+                    <img id="qrisImage" src="" alt="QRIS Barcode" style="width: 250px; height: 250px;">
+                </div>
+                <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">Setelah membayar, klik tombol di bawah untuk konfirmasi ke WhatsApp.</p>
+                <button onclick="finalizeToWA()" style="width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">SAYA SUDAH BAYAR (KONFIRMASI WA)</button>
             </div>
-            <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">Setelah membayar, klik tombol di bawah untuk konfirmasi ke WhatsApp.</p>
-            <button onclick="finalizeToWA()" style="width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">SAYA SUDAH BAYAR (KONFIRMASI WA)</button>
-        </div>
 
-        <button onclick="closeModal()" style="width: 100%; margin-top: 10px; padding: 8px; background: none; border: none; color: #999; cursor: pointer; font-size: 0.9rem;">Batal</button>
+            <button onclick="closeModal()" style="width: 100%; margin-top: 10px; padding: 8px; background: none; border: none; color: #999; cursor: pointer; font-size: 0.9rem;">Batal</button>
+        </div>
     </div>
-</div>
-
-<style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
 </body>
 </html>
