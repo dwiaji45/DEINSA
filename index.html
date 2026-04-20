@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEINSA - Katalog Produk</title>
+    <style>
+        /* Mengimplementasikan Warna Nuansa Sesuai Blueprint */
+        :root {
+            --sage-green: #A3B18A;
+            --beige-cream: #DAD7CD;
+            --dark-forest: #344E41;
+            --off-white: #F9F9F6;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--off-white);
+            color: var(--dark-forest);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar: Latar Putih, Teks Hijau Tua */
+        header {
+            background-color: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            color: var(--dark-forest);
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* Tombol Keranjang / WA */
+        .btn-checkout {
+            background-color: var(--sage-green);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--dark-forest);
+        }
+
+        /* Container Produk */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Product Card */
+        .card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--beige-cream);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            /* Latar belakang jika gambar belum load */
+            background-color: var(--beige-cream); 
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card-price {
+            color: var(--sage-green);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Skeleton Loader UI */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        .skeleton-img { height: 250px; width: 100%; }
+        .skeleton-text { height: 20px; width: 80%; margin: 10px 15px; border-radius: 4px; }
+        .skeleton-btn { height: 35px; width: 90%; margin: 10px 15px; border-radius: 5px; }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DEINSA</h1>
+        <button class="btn-checkout" id="checkoutBtn" onclick="handleCheckoutMiddleware()">🛒 Keranjang (<span id="cartCount">0</span>)</button>
+    </header>
+
+    <div id="skeletonContainer" class="product-grid">
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+    </div>
+
+    <div id="productContainer" class="product-grid" style="display: none;"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
