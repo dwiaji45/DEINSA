@@ -82,7 +82,7 @@ function processCheckout() {
     
     // Encode pesan untuk URL
     const encodedPesan = encodeURIComponent(pesanWA);
-    const nomorAdmin = "6281234567890"; // Ganti dengan nomor WA Admin
+    const nomorAdmin = "6289686000405"; // Ganti dengan nomor WA Admin
 
     // Backup riwayat ke GAS (Background process)
     saveOrderHistory(cart, totalHarga);
