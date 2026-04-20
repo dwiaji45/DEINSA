@@ -333,16 +333,17 @@
                 <button class="btn-primary">Lihat Koleksi</button>
             </div>
         </section>
-
-        <section class="products-section">
-            <h3>Produk Terbaru</h3>
-            <div id="skeletonContainer" class="product-grid" style="display: none;">
-                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div></div>
-                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div></div>
-                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div></div>
-            </div>
-        </section>
     </main>
+    <div id="skeletonContainer" class="product-grid">
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+        <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width: 50%;"></div><div class="skeleton skeleton-btn"></div></div>
+    </div>
+
+    <div id="productContainer" class="product-grid" style="display: none;"></div>
+
+    <script src="app.js"></script>
 
     <footer>
         <div class="footer-left">
