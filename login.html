@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk | DEINSA</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --sage-green: #A3B18A;
+            --beige-cream: #DAD7CD;
+            --dark-forest: #344E41;
+            --off-white: #F9F9F6;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--off-white);
+            color: var(--dark-forest);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: var(--white);
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid var(--beige-cream);
+        }
+
+        .login-container h1 {
+            color: var(--dark-forest);
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--sage-green);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--dark-forest);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>DEINSA</h1>
+        <p>Masuk untuk menyimpan keranjang belanja dan melanjutkan transaksi Anda dengan aman.</p>
+
+        <div id="g_id_onload"
+             data-client_id="YOUR_CLIENT_ID.apps.googleusercontent.com"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+
+        <div class="google-btn-wrapper">
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← Kembali ke Katalog</a>
+    </div>
+
+    <script>
+        // Fungsi untuk mengurai JWT (JSON Web Token) yang dikirim oleh Google
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (error) {
+                console.error("Gagal membaca token otentikasi", error);
+                return null;
+            }
+        }
+
+        // Fungsi Callback yang dijalankan otomatis saat user berhasil login di popup Google
+        function handleCredentialResponse(response) {
+            // 1. Ambil JWT Token dari Google
+            const idToken = response.credential;
+            
+            // 2. Ekstrak data user (Nama & Email)
+            const userData = parseJwt(idToken);
+            
+            if (userData) {
+                // 3. Simpan ke localStorage sesuai skenario Middleware di app.js
+                localStorage.setItem('user_token', idToken);
+                localStorage.setItem('user_name', userData.name);
+                localStorage.setItem('user_email', userData.email);
+
+                // Notifikasi visual (opsional)
+                alert(`Selamat datang kembali, ${userData.name}!`);
+
+                // 4. Arahkan kembali ke index.html agar user bisa langsung checkout
+                window.location.href = 'index.html';
+            } else {
+                alert("Terjadi kesalahan saat otentikasi. Silakan coba lagi.");
+            }
+        }
+    </script>
+</body>
+</html>
