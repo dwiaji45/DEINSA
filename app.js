@@ -1,6 +1,12 @@
-// URL Web App GAS Anda setelah di-deploy
+// URL Web App GAS Anda setelah di-deploy (Pastikan URL ini yang terbaru!)
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzVUGRXk3b-JEBc86Gu_BZ4oep1CR6dMcISknFtSYrNJCMadYvGenMq-ZJPAlqFa73fLQ/exec';
 let cart = [];
+
+// Variabel Global untuk Kalkulasi
+let currentOngkir = 0;
+let subtotalCart = 0;
+const beratPerItem = 500; // Asumsi berat pukul rata 500 gram per item
+let activeOrderId = ""; // Untuk menyimpan ID pesanan sementara
 
 // === TAHAP 1: SINKRONISASI PRODUK ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -21,7 +27,6 @@ async function fetchProducts() {
         products.forEach(product => {
             const card = document.createElement('div');
             card.className = 'card';
-            // Lazy loading diterapkan pada tag <img>
             card.innerHTML = `
                 <img src="${product.GambarURL}" alt="${product.Nama}" loading="lazy">
                 <div class="card-content">
@@ -60,65 +65,12 @@ function handleCheckoutMiddleware() {
         alert("Silakan masuk/login terlebih dahulu untuk melanjutkan.");
         window.location.href = 'login.html'; 
     } else {
-        // Lanjut ke Kalkulasi & Finalisasi
+        // Lanjut ke Kalkulasi & Finalisasi Modal
         processCheckout();
     }
 }
 
-// === TAHAP 3 & 4: KALKULASI, TRANSAKSI, DAN WA BRIDGE ===
-function processCheckout() {
-    // Pada skenario nyata, ini akan diarahkan ke halaman checkout/ringkasan
-    // untuk menghitung ongkir via API RajaOngkir sebelum ke WA.
-    
-    let totalHarga = 0;
-    let pesanWA = "Halo Admin DEINSA, saya ingin memesan:\n\n";
-    
-    cart.forEach((item, index) => {
-        pesanWA += `${index + 1}. ${item.nama} - Rp ${item.harga.toLocaleString('id-ID')}\n`;
-        totalHarga += item.harga;
-    });
-
-    pesanWA += `\n*Total Harga: Rp ${totalHarga.toLocaleString('id-ID')}*\n(Belum termasuk ongkir)\n\nMohon info ongkos kirim dan rekening pembayaran. Terima kasih.`;
-    
-    // Encode pesan untuk URL
-    const encodedPesan = encodeURIComponent(pesanWA);
-    const nomorAdmin = "6289686000405"; // Ganti dengan nomor WA Admin
-
-    // Backup riwayat ke GAS (Background process)
-    saveOrderHistory(cart, totalHarga);
-
-    // Buka WhatsApp
-    window.open(`https://wa.me/${nomorAdmin}?text=${encodedPesan}`, '_blank');
-    
-    // Kosongkan keranjang setelah checkout
-    cart = [];
-    localStorage.removeItem('tempCart');
-    document.getElementById('cartCount').innerText = 0;
-}
-
-function saveOrderHistory(items, total) {
-    // POST request ke GAS untuk backup data (Silent request)
-    fetch(GAS_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Penting agar tidak terblokir CORS pada GitHub Pages
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            orderId: 'ORD-' + Math.floor(Math.random() * 1000000),
-            nama: localStorage.getItem('user_name') || 'Guest',
-            items: items,
-            total: total
-        })
-    }).catch(error => console.error("Gagal menyimpan riwayat:", error));
-}
-// Variabel global untuk ongkir
-let currentOngkir = 0;
-let subtotalCart = 0;
-// Asumsi berat pukul rata 500 gram per item (Bisa disesuaikan nanti)
-const beratPerItem = 500; 
-
-// OVERRIDE: Ubah fungsi processCheckout yang lama agar membuka Modal
+// === TAHAP 3: KALKULASI & TAMPILAN MODAL CHECKOUT ===
 function processCheckout() {
     subtotalCart = cart.reduce((sum, item) => sum + item.harga, 0);
     document.getElementById('subtotalDisplay').innerText = subtotalCart.toLocaleString('id-ID');
@@ -142,18 +94,26 @@ function closeModal() {
 }
 
 // === FUNGSI RAJAONGKIR (VIA GAS PROXY) ===
-
 async function loadProvinces() {
     document.getElementById('provinsiSelect').innerHTML = '<option>Memuat provinsi...</option>';
     try {
         const response = await fetch(GAS_URL + '?action=provinces');
         const data = await response.json();
-        const provinces = data.rajaongkir.results;
         
+        // Pengecekan keamanan: Jika GAS belum di-deploy ulang, data.rajaongkir tidak akan ada
+        if (!data.rajaongkir) {
+            throw new Error("Format respons salah. Pastikan GAS di-deploy sebagai 'New Version'.");
+        }
+
+        const provinces = data.rajaongkir.results;
         let html = '<option value="">Pilih Provinsi...</option>';
         provinces.forEach(prov => { html += `<option value="${prov.province_id}">${prov.province}</option>`; });
         document.getElementById('provinsiSelect').innerHTML = html;
-    } catch(e) { console.error("Error load province", e); }
+    } catch(e) { 
+        console.error("Error load province", e); 
+        document.getElementById('provinsiSelect').innerHTML = '<option value="">Gagal memuat. Coba lagi.</option>';
+        alert("Gagal memuat provinsi! Periksa kembali URL GAS atau pastikan sudah di-deploy ulang sebagai 'New Version'.");
+    }
 }
 
 async function loadCities() {
@@ -173,7 +133,9 @@ async function loadCities() {
         let html = '<option value="">Pilih Kota/Kabupaten...</option>';
         cities.forEach(city => { html += `<option value="${city.city_id}">${city.type} ${city.city_name}</option>`; });
         kotaSelect.innerHTML = html;
-    } catch(e) { console.error("Error load city", e); }
+    } catch(e) { 
+        console.error("Error load city", e); 
+    }
 }
 
 function enableCourier() {
@@ -189,8 +151,9 @@ async function checkShippingCost() {
     
     if(!destId || !courier) return;
 
-    document.getElementById('ongkirLoading').style.display = 'block';
-    document.getElementById('btnKirimWA').disabled = true;
+    const btnBayar = document.getElementById('btnBayarSekarang');
+    btnBayar.innerText = "Menghitung Ongkir...";
+    btnBayar.disabled = true;
 
     try {
         const response = await fetch(GAS_URL + `?action=cost&destination=${destId}&weight=${totalWeight}&courier=${courier}`);
@@ -207,18 +170,17 @@ async function checkShippingCost() {
         const grandTotal = subtotalCart + currentOngkir;
         document.getElementById('grandTotalDisplay').innerText = grandTotal.toLocaleString('id-ID');
         
-        document.getElementById('btnKirimWA').disabled = false;
+        btnBayar.innerText = "PROSES PEMBAYARAN";
+        btnBayar.disabled = false;
     } catch(e) { 
+        console.error(e);
         alert("Gagal menghitung ongkir. Coba kurir lain.");
-    } finally {
-        document.getElementById('ongkirLoading').style.display = 'none';
+        btnBayar.innerText = "PROSES PEMBAYARAN";
+        // Tombol dibiarkan disabled karena ongkir gagal dikalkulasi
     }
 }
 
-// Variabel untuk menyimpan data pesanan sementara
-let activeOrderId = "";
-
-// FUNGSI UNTUK MEMBUAT PESANAN & GENERATE QRIS
+// === TAHAP 4: PEMBAYARAN QRIS & WHATSAPP ===
 async function generatePaymentQRIS() {
     const alamat = document.getElementById('alamatLengkap').value;
     const kotaNama = document.getElementById('kotaSelect').options[document.getElementById('kotaSelect').selectedIndex].text;
@@ -273,7 +235,6 @@ async function generatePaymentQRIS() {
     }
 }
 
-// FUNGSI UNTUK KIRIM PESAN FINAL KE WHATSAPP
 function finalizeToWA() {
     const grandTotal = subtotalCart + currentOngkir;
     const nomorAdmin = "6289686000405"; // GANTI DENGAN NOMOR WA ANDA
