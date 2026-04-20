@@ -141,43 +141,50 @@
     <div id="productContainer" class="product-grid" style="display: none;"></div>
 
     <script src="app.js"></script>
-<div id="checkoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; padding: 2rem; border-radius: 10px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
-        <h2 style="color: var(--dark-forest); margin-top: 0;">Ringkasan Pesanan</h2>
+<div id="checkoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    <div style="background: white; padding: 2rem; border-radius: 15px; width: 90%; max-width: 450px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+        <h2 style="color: var(--dark-forest); margin-top: 0; text-align: center;">Checkout</h2>
         
-        <div id="cartItemsList" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
-        <p><strong>Subtotal: <span style="color: var(--sage-green);">Rp <span id="subtotalDisplay">0</span></span></strong></p>
-        
-        <hr style="border: 0; border-top: 1px solid var(--beige-cream); margin: 1.5rem 0;">
-        
-        <h3 style="font-size: 1.1rem;">Alamat Pengiriman</h3>
-        <textarea id="alamatLengkap" placeholder="Jalan, RT/RW, Desa/Kelurahan..." style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;" rows="3"></textarea>
-        
-        <select id="provinsiSelect" onchange="loadCities()" style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px;">
-            <option value="">Pilih Provinsi...</option>
-        </select>
-        
-        <select id="kotaSelect" onchange="enableCourier()" style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px;" disabled>
-            <option value="">Pilih Kota/Kabupaten...</option>
-        </select>
+        <div id="checkoutFormStep">
+            <div id="cartItemsList" style="margin-bottom: 1rem; font-size: 0.85rem; background: #f9f9f9; padding: 10px; border-radius: 8px;"></div>
+            
+            <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Alamat Pengiriman</h3>
+            <textarea id="alamatLengkap" placeholder="Nama Jalan, No Rumah, RT/RW..." style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream); box-sizing: border-box;"></textarea>
+            
+            <select id="provinsiSelect" onchange="loadCities()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);"></select>
+            <select id="kotaSelect" onchange="enableCourier()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);" disabled></select>
+            <select id="kurirSelect" onchange="checkShippingCost()" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--beige-cream);" disabled>
+                <option value="">Pilih Kurir...</option>
+                <option value="jne">JNE (Reguler)</option>
+                <option value="pos">POS Indonesia</option>
+                <option value="tiki">TIKI</option>
+            </select>
 
-        <select id="kurirSelect" onchange="checkShippingCost()" style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 5px;" disabled>
-            <option value="">Pilih Kurir...</option>
-            <option value="jne">JNE</option>
-            <option value="pos">POS Indonesia</option>
-            <option value="tiki">TIKI</option>
-        </select>
+            <div id="summarySection" style="background: var(--off-white); padding: 15px; border-radius: 10px; margin-top: 10px;">
+                <div style="display: flex; justify-content: space-between;"><span>Subtotal:</span> <span>Rp <span id="subtotalDisplay">0</span></span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Ongkir:</span> <span>Rp <span id="ongkirDisplay">0</span></span></div>
+                <hr>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--dark-forest);"><span>Total Bayar:</span> <span>Rp <span id="grandTotalDisplay">0</span></span></div>
+            </div>
 
-        <div id="ongkirLoading" style="display: none; color: #666; font-size: 0.8rem;">Menghitung ongkos kirim...</div>
-        
-        <p><strong>Ongkos Kirim: Rp <span id="ongkirDisplay">0</span></strong></p>
-        <h3 style="background: var(--beige-cream); padding: 0.5rem; border-radius: 5px;">TOTAL BAYAR: Rp <span id="grandTotalDisplay">0</span></h3>
-
-        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-            <button onclick="closeModal()" style="flex: 1; padding: 0.8rem; border: none; background: #ccc; border-radius: 5px; cursor: pointer;">Batal</button>
-            <button onclick="finalizeOrderWA()" id="btnKirimWA" style="flex: 2; padding: 0.8rem; border: none; background: var(--sage-green); color: white; font-weight: bold; border-radius: 5px; cursor: pointer;" disabled>Kirim Pesanan (WA)</button>
+            <button onclick="generatePaymentQRIS()" id="btnBayarSekarang" style="width: 100%; margin-top: 15px; padding: 12px; background: var(--sage-green); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" disabled>PROSES PEMBAYARAN</button>
         </div>
+
+        <div id="qrisDisplaySection" style="display: none; text-align: center; animation: fadeIn 0.5s;">
+            <p style="font-weight: bold; color: var(--dark-forest);">Silakan Scan QRIS Berikut:</p>
+            <div style="background: white; padding: 10px; border: 2px solid var(--beige-cream); border-radius: 10px; display: inline-block;">
+                <img id="qrisImage" src="" alt="QRIS Barcode" style="width: 250px; height: 250px;">
+            </div>
+            <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">Setelah membayar, klik tombol di bawah untuk konfirmasi ke WhatsApp.</p>
+            <button onclick="finalizeToWA()" style="width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">SAYA SUDAH BAYAR (KONFIRMASI WA)</button>
+        </div>
+
+        <button onclick="closeModal()" style="width: 100%; margin-top: 10px; padding: 8px; background: none; border: none; color: #999; cursor: pointer; font-size: 0.9rem;">Batal</button>
     </div>
 </div>
+
+<style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
 </body>
 </html>
