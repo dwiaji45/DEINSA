@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi | DEINSA</title>
+    <style>
+        /* Gunakan CSS lengkap dari index.html lama Anda di sini */
+        /* ... (Copy paste semua style CSS utama di sini) ... */
+    </style>
+</head>
+<body>
+    <header>
+        <h1><img src="https://lh3.googleusercontent.com/d/1dvL1gpVLCDuzvGaXJO_C6Qu1KQfPLat_" alt="Logo DEINSA" width="150"></h1>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="koleksi.html" class="active">Koleksi</a>
+            <a href="tentang.html">Tentang Kami</a>
+            <a href="kontak.html">Kontak</a>
+            
+            <button class="nav-cart-btn" onclick="handleCheckoutMiddleware()">
+                🛒 Keranjang (<span id="cartCount">0</span>)
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="products-section" style="margin-top: 2rem;">
+            <h3>Koleksi Terbaru Kami</h3>
+
+            <div id="skeletonContainer" class="product-grid">
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
+                <div class="card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
+            </div>
+
+            <div id="productContainer" class="product-grid" style="display: none;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <p><strong>DEINSA - Fashion Muslim Bantul, Yogyakarta</strong></p>
+            <p>© 2026 DEINSA Official. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
