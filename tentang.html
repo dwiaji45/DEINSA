@@ -4,8 +4,301 @@
     <meta charset="UTF-8">
     <title>Tentang Kami | DEINSA</title>
     <style>
-        /* Copy style header/footer */
-        /* ... */
+        /* --- TEMA WARNA BARU SESUAI GAMBAR --- */
+        :root {
+            --sage-green: #7A9374;
+            --beige-cream: #EBE6D9;
+            --dark-forest: #2C4032;
+            --off-white: #F7F6F1;
+            --white: #FFFFFF;
+            --text-gray: #555555;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--off-white);
+            color: var(--dark-forest);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- NAVBAR --- */
+        header {
+            background-color: transparent;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            color: var(--dark-forest);
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-forest);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a.active {
+            background-color: var(--beige-cream);
+        }
+
+        .nav-links a:hover:not(.active) {
+            opacity: 0.7;
+        }
+
+        /* Tombol Keranjang Bawaan Anda (Desain Disesuaikan) */
+        .nav-cart-btn {
+            background-color: var(--white);
+            color: var(--dark-forest);
+            border: 1.5px solid var(--sage-green);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-cart-btn:hover {
+            background-color: var(--sage-green);
+            color: var(--white);
+        }
+
+        /* Ikon WA */
+        .wa-icon {
+            width: 35px;
+            height: 35px;
+            border: 1.5px solid var(--sage-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sage-green);
+            padding: 0 !important;
+        }
+        
+        .wa-icon:hover {
+            background-color: var(--sage-green);
+            color: var(--white) !important;
+        }
+
+        /* --- STRUKTUR UTAMA --- */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem 1rem;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--beige-cream);
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .hero-img {
+            flex: 1;
+            min-height: 350px;
+            background-image: url('https://images.unsplash.com/photo-1589465885855-40073e207065?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-content h2 {
+            font-size: 2.8rem;
+            margin: 0 0 1rem 0;
+            color: var(--dark-forest);
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+            margin: 0 0 2rem 0;
+        }
+
+        .btn-hero {
+            background-color: var(--sage-green);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            width: max-content;
+            transition: background-color 0.3s;
+        }
+
+        .btn-hero:hover {
+            background-color: var(--dark-forest);
+        }
+
+        /* --- SECTION PRODUK --- */
+        .products-section {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .products-section h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            color: var(--dark-forest);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Desain Card & Tombol Dinamis app.js */
+        .card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #EEEEEE;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+        }
+
+        .card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background-color: var(--beige-cream); 
+        }
+
+        .card-content {
+            padding: 1.2rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0 0 0.5rem 0;
+            color: var(--dark-forest);
+        }
+
+        .card-price {
+            color: var(--sage-green);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Menimpa styling tombol bawaan app.js Anda agar lebih cantik */
+        .btn-checkout {
+            background-color: var(--off-white);
+            color: var(--dark-forest) !important;
+            border: 1px solid var(--beige-cream) !important;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--sage-green);
+            color: var(--white) !important;
+            border-color: var(--sage-green) !important;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--dark-forest);
+            color: var(--white);
+            padding: 3rem 5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        .footer-left p, .footer-right p {
+            margin: 0.3rem 0;
+            color: #DDE2DF;
+        }
+        
+        .footer-left .brand-bold {
+            font-weight: bold;
+            color: var(--white);
+            font-size: 0.95rem;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        /* --- SKELETON BAWAAN ANDA --- */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        .skeleton-img { height: 280px; width: 100%; }
+        .skeleton-text { height: 18px; width: 80%; margin: 10px 15px; border-radius: 4px; }
+        .skeleton-btn { height: 35px; width: 90%; margin: 10px 15px; border-radius: 20px; }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; }
+            .hero-img { min-height: 250px; }
+            header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            footer { padding: 2rem; flex-direction: column; text-align: center; gap: 1.5rem; }
+            .footer-right { text-align: center; }
+        }
+        
         .about-content { background: white; padding: 3rem; border-radius: 15px; margin-top: 2rem; line-height: 1.8; color: #333;}
         .about-content h2 { color: #2C4032; border-bottom: 2px solid #EBE6D9; padding-bottom: 10px;}
     </style>
