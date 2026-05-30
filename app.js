@@ -89,7 +89,7 @@ function handleCheckoutMiddleware() {
 // === TAHAP 3: CHECKOUT LANGSUNG KE WHATSAPP ===
 function checkoutLangsungKeWA() {
     const subtotalCart = cart.reduce((sum, item) => sum + item.harga, 0);
-    const nomorAdmin = "6289686000405"; // Nomor WhatsApp Admin DEINSA
+    const nomorAdmin = "62816847468"; // Nomor WhatsApp Admin DEINSA
     const userName = localStorage.getItem('user_name') || 'Pelanggan';
     
     let pesanWA = `*HALO DEINSA, SAYA MAU ORDER* 🛍️\n`;
