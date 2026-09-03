@@ -5,69 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DEINSA - Katalog Busana</title>
   <style>
-    /* Styling Dasar */
+    /* Styling Dasar & Navbar (Tetap Sama) */
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; color: #333; }
-    
-    /* ================= NAVBAR ================= */
-    .navbar { 
-      background-color: #2c3e50; 
-      padding: 15px 30px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      position: sticky; 
-      top: 0; 
-      z-index: 1000; 
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
-    }
+    .navbar { background-color: #2c3e50; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
     .nav-brand { color: #fff; font-size: 24px; font-weight: bold; text-decoration: none; letter-spacing: 2px; }
-    .nav-links a { color: #ecf0f1; text-decoration: none; margin-left: 20px; font-size: 15px; transition: color 0.3s; font-weight: 500; }
+    .nav-links a { color: #ecf0f1; text-decoration: none; margin-left: 20px; font-size: 15px; font-weight: 500; }
     .nav-links a:hover { color: #3498db; }
 
-    /* ================= KONTEN UTAMA ================= */
+    /* Konten Utama */
     .main-content { padding: 40px 20px; text-align: center; min-height: 70vh; }
     .main-content h1 { color: #2C3E50; margin-top: 0; margin-bottom: 25px; }
-    
-    #inputCari { 
-      padding: 12px 20px; 
-      width: 80%; 
-      max-width: 500px; 
-      margin-bottom: 40px; 
-      border-radius: 25px; 
-      border: 1px solid #ccc; 
-      font-size: 15px; 
-      outline: none; 
-      text-align: center; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
+    #inputCari { padding: 12px 20px; width: 80%; max-width: 500px; margin-bottom: 40px; border-radius: 25px; border: 1px solid #ccc; font-size: 15px; outline: none; text-align: center; }
     
     #katalog-busana { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; }
     
-    /* Kartu Produk */
-    .kartu-produk { background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); width: 240px; text-align: left; transition: transform 0.2s, box-shadow 0.2s; }
+    /* Kartu Produk (Sekarang bisa diklik sepenuhnya) */
+    .kartu-produk { background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); width: 240px; text-align: left; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
     .kartu-produk:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
     .kartu-produk img { width: 100%; height: 260px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
     .kartu-produk h3 { margin: 0 0 8px 0; font-size: 1.1em; color: #2c3e50; }
     .kartu-produk p { margin: 5px 0; color: #7f8c8d; font-size: 0.9em; }
     .harga { font-weight: bold; color: #e74c3c !important; font-size: 1.15em !important; margin-top: 10px !important; }
     
-    .btn-pesan { display: block; width: 100%; padding: 12px; background-color: #25D366; color: white; border: none; border-radius: 8px; cursor: pointer; text-align: center; font-weight: bold; margin-top: 15px; font-size: 1em; transition: background 0.2s; }
-    .btn-pesan:hover { background-color: #128C7E; }
+    .label-klik { display: block; text-align: center; background: #ecf0f1; padding: 8px; border-radius: 6px; margin-top: 15px; font-size: 0.85em; font-weight: bold; color: #2c3e50; }
+    .kartu-produk:hover .label-klik { background: #3498db; color: white; }
 
-    /* ================= FOOTER ================= */
+    /* ================= MODAL DETAIL PRODUK ================= */
+    .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
+    .modal-content { background-color: #fff; margin: 5% auto; padding: 25px; border-radius: 12px; width: 90%; max-width: 850px; position: relative; display: flex; flex-wrap: wrap; gap: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: slideDown 0.3s ease-out; }
+    @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    
+    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; font-weight: bold; color: #95a5a6; cursor: pointer; z-index: 10; }
+    .close-btn:hover { color: #e74c3c; }
+    
+    .modal-kiri { flex: 1; min-width: 300px; position: relative; }
+    .modal-kanan { flex: 1.2; min-width: 300px; display: flex; flex-direction: column; text-align: left; }
+    
+    /* Slider Gambar */
+    .slider-container { position: relative; width: 100%; height: 400px; border-radius: 10px; overflow: hidden; background: #f9f9f9; }
+    .slider-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .slider-img.aktif { display: block; }
+    
+    .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; cursor: pointer; font-size: 18px; border-radius: 50%; transition: 0.2s; }
+    .slider-btn:hover { background: rgba(0,0,0,0.8); }
+    .slider-btn.prev { left: 10px; }
+    .slider-btn.next { right: 10px; }
+    
+    .dot-container { text-align: center; margin-top: 15px; }
+    .dot { display: inline-block; width: 10px; height: 10px; background: #ccc; border-radius: 50%; margin: 0 5px; cursor: pointer; transition: 0.3s; }
+    .dot.aktif { background: #2c3e50; transform: scale(1.2); }
+
+    /* Info Detail */
+    .modal-kanan h2 { margin: 0 0 10px 0; color: #2c3e50; font-size: 1.8em; }
+    .modal-harga { color: #e74c3c; font-size: 1.5em; font-weight: bold; margin-bottom: 15px; }
+    .modal-badge { display: inline-block; background: #ecf0f1; padding: 5px 10px; border-radius: 4px; font-size: 0.9em; margin-right: 10px; margin-bottom: 20px; }
+    .modal-deskripsi { color: #555; line-height: 1.6; flex-grow: 1; white-space: pre-wrap; font-size: 0.95em; }
+    
+    .btn-pesan { width: 100%; padding: 15px; background-color: #25D366; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 20px; transition: 0.2s; }
+    .btn-pesan:hover { background-color: #128C7E; transform: scale(1.02); }
+
     footer { background-color: #2c3e50; color: #ecf0f1; padding: 40px 20px 20px; text-align: center; margin-top: 40px; }
-    .footer-content { max-width: 800px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; text-align: left; }
-    .footer-section { flex: 1; min-width: 200px; }
-    .footer-section h3 { color: #fff; margin-bottom: 15px; letter-spacing: 1px; }
-    .footer-section p { color: #bdc3c7; font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
-    .footer-bottom { border-top: 1px solid #34495e; padding-top: 20px; margin-top: 30px; font-size: 13px; color: #95a5a6; text-align: center; }
+    .footer-content { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-around; flex-wrap: wrap; text-align: left; gap: 20px; }
 
-    /* Responsif untuk HP */
-    @media (max-width: 600px) {
-      .navbar { flex-direction: column; gap: 15px; padding: 15px; }
-      .nav-links { display: flex; gap: 15px; }
-      .nav-links a { margin: 0; }
-      .footer-content { flex-direction: column; text-align: center; }
+    @media (max-width: 768px) {
+      .modal-content { flex-direction: column; margin: 10% auto; padding: 20px; height: 80vh; overflow-y: auto; }
+      .slider-container { height: 300px; }
+      .modal-kanan { padding-top: 10px; }
     }
   </style>
 </head>
@@ -77,126 +80,202 @@
   <nav class="navbar">
     <a href="#" class="nav-brand">DEINSA</a>
     <div class="nav-links">
-      <a href="#">Beranda</a>
-      <a href="#katalog-section">Katalog Produk</a>
-      <a href="#footer-section">Hubungi Kami</a>
+      <a href="#katalog-section">Katalog</a>
     </div>
   </nav>
 
   <!-- KONTEN UTAMA -->
   <div class="main-content">
-    <h1 id="katalog-section">Temukan Gaya Terbaikmu</h1>
-    
-    <!-- Fitur Pencarian -->
-    <input type="text" id="inputCari" placeholder="🔍 Cari nama pakaian atau kategori (Kemeja, Gaun...)" onkeyup="filterKatalog()">
+    <h1 id="katalog-section">Koleksi Terbaru</h1>
+    <input type="text" id="inputCari" placeholder="🔍 Cari nama pakaian atau kategori..." onkeyup="filterKatalog()">
+    <div id="katalog-busana"><p>Mengambil data dari server...</p></div>
+  </div>
 
-    <!-- Wadah Produk -->
-    <div id="katalog-busana">
-      <p style="color: #7f8c8d; font-style: italic;">Mengambil data dari server...</p>
+  <!-- ================= MODAL DETAIL PRODUK ================= -->
+  <div id="modal-detail" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="tutupDetail()">&times;</span>
+      
+      <!-- Bagian Kiri: Slider Gambar -->
+      <div class="modal-kiri">
+        <div class="slider-container" id="slider-wrapper">
+          <!-- Gambar disisipkan lewat JS -->
+        </div>
+        <button class="slider-btn prev" id="btn-prev" onclick="geserGambar(-1)">&#10094;</button>
+        <button class="slider-btn next" id="btn-next" onclick="geserGambar(1)">&#10095;</button>
+        <div class="dot-container" id="slider-dots">
+          <!-- Titik disisipkan lewat JS -->
+        </div>
+      </div>
+
+      <!-- Bagian Kanan: Info Produk -->
+      <div class="modal-kanan">
+        <h2 id="detail-nama">Nama Produk</h2>
+        <div class="modal-harga" id="detail-harga">Rp 0</div>
+        
+        <div>
+          <span class="modal-badge" id="detail-kategori">Kategori</span>
+          <span class="modal-badge" id="detail-stok">Stok</span>
+        </div>
+        
+        <h4 style="margin-bottom: 5px; color: #2c3e50;">Deskripsi Produk:</h4>
+        <div class="modal-deskripsi" id="detail-deskripsi">Deskripsi akan muncul di sini...</div>
+        
+        <button class="btn-pesan" id="btn-modal-pesan">🛒 Beli Sekarang (WhatsApp)</button>
+      </div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <footer id="footer-section">
+  <footer>
     <div class="footer-content">
-      <div class="footer-section">
+      <div>
         <h3>Tentang DEINSA</h3>
-        <p>Toko busana online yang menghadirkan koleksi pakaian trendi dengan kualitas terbaik. Tampil percaya diri setiap hari bersama DEINSA.</p>
+        <p style="font-size: 14px; color:#bdc3c7;">Toko busana online dengan koleksi pakaian trendi.</p>
       </div>
-      <div class="footer-section">
-        <h3>Layanan Pelanggan</h3>
-        <p>Jam Operasional: Senin - Sabtu (09.00 - 17.00)</p>
-        <p>WhatsApp: 0816847468</p>
+      <div>
+        <h3>Kontak</h3>
+        <p style="font-size: 14px; color:#bdc3c7;">WhatsApp: 0816847468<br>📍 Yogyakarta, Indonesia</p>
       </div>
-      <div class="footer-section">
-        <h3>Lokasi Kami</h3>
-        <p>📍 Yogyakarta, Indonesia</p>
-        <p>Melayani pengiriman ke seluruh Nusantara.</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2026 DEINSA. Hak Cipta Dilindungi Undang-Undang.
     </div>
   </footer>
 
   <script>
-    // URL Web App GAS
     const urlAPI = 'https://script.google.com/macros/s/AKfycbzVUGRXk3b-JEBc86Gu_BZ4oep1CR6dMcISknFtSYrNJCMadYvGenMq-ZJPAlqFa73fLQ/exec';
-    
-    // Nomor WA Admin
     const NOMOR_WA_ADMIN = "62816847468";
     
     let dataProdukGlobal = []; 
+    let kumpulanGambar = [];
+    let indexGambarSaatIni = 0;
 
-    // Fungsi Fetch Data
+    // 1. Muat Data
     async function muatKatalog() {
       try {
         const response = await fetch(`${urlAPI}?action=getProduk`);
         dataProdukGlobal = await response.json();
         tampilkanProduk(dataProdukGlobal);
       } catch (error) {
-        document.getElementById('katalog-busana').innerHTML = '<p style="color: red;">Gagal memuat katalog. Periksa koneksi Anda.</p>';
+        document.getElementById('katalog-busana').innerHTML = '<p>Gagal memuat katalog.</p>';
       }
     }
 
-    // Fungsi Render HTML
+    // 2. Tampilkan Daftar Produk
     function tampilkanProduk(data) {
       let htmlKatalog = '';
-      
       if (data.length === 0) {
-        document.getElementById('katalog-busana').innerHTML = '<p>Maaf, produk tidak ditemukan atau stok sedang kosong.</p>';
+        document.getElementById('katalog-busana').innerHTML = '<p>Produk tidak ditemukan.</p>';
         return;
       }
 
       data.forEach(item => {
+        // Ambil gambar pertama saja untuk cover kartu (jika ada koma)
+        const gambarCover = item.URL_Gambar.split(',')[0].trim();
+
         htmlKatalog += `
-          <div class="kartu-produk">
-            <img src="${item.URL_Gambar}" alt="${item.Nama_Produk}" onerror="this.src='https://via.placeholder.com/250x260?text=Gambar+Tidak+Tersedia'">
+          <div class="kartu-produk" onclick="bukaDetail('${item.ID_Produk}')">
+            <img src="${gambarCover}" alt="${item.Nama_Produk}" onerror="this.src='https://via.placeholder.com/250x260?text=Tanpa+Gambar'">
             <h3>${item.Nama_Produk}</h3>
-            <p style="font-size: 0.85em;">Kode: ${item.ID_Produk} | Kategori: ${item.Kategori}</p>
+            <p style="font-size: 0.85em;">${item.Kategori}</p>
             <p class="harga">Rp ${parseInt(item.Harga).toLocaleString('id-ID')}</p>
-            <p style="margin-top: 8px;">Tersedia: <strong>${item.Stok}</strong> pcs</p>
-            <button class="btn-pesan" onclick="checkoutWA('${item.ID_Produk}')">🛒 Pesan via WA</button>
+            <span class="label-klik">Lihat Detail Produk</span>
           </div>
         `;
       });
       document.getElementById('katalog-busana').innerHTML = htmlKatalog;
     }
 
-    // Fungsi Filter
+    // 3. Logika Filter Pencarian
     function filterKatalog() {
       const kataKunci = document.getElementById('inputCari').value.toLowerCase();
-      
-      const hasilFilter = dataProdukGlobal.filter(item => {
-        const nama = item.Nama_Produk.toLowerCase();
-        const kategori = item.Kategori.toLowerCase();
-        return nama.includes(kataKunci) || kategori.includes(kataKunci); 
-      });
-      
+      const hasilFilter = dataProdukGlobal.filter(item => 
+        item.Nama_Produk.toLowerCase().includes(kataKunci) || item.Kategori.toLowerCase().includes(kataKunci)
+      );
       tampilkanProduk(hasilFilter);
     }
 
-    // Fungsi Checkout WA
-    function checkoutWA(idProduk) {
+    // ================= FUNGSI MODAL & SLIDER =================
+
+    function bukaDetail(idProduk) {
       const produk = dataProdukGlobal.find(item => item.ID_Produk === idProduk);
-      
       if (!produk) return;
 
-      const pesan = `Halo Admin DEINSA, saya tertarik memesan produk ini:\n\n` +
+      // Persiapkan Array Gambar (Pisahkan koma jika banyak gambar)
+      kumpulanGambar = produk.URL_Gambar.split(',').map(url => url.trim());
+      indexGambarSaatIni = 0;
+      renderSlider();
+
+      // Isi teks info detail
+      document.getElementById('detail-nama').innerText = produk.Nama_Produk;
+      document.getElementById('detail-harga').innerText = 'Rp ' + parseInt(produk.Harga).toLocaleString('id-ID');
+      document.getElementById('detail-kategori').innerText = 'Kategori: ' + produk.Kategori;
+      document.getElementById('detail-stok').innerText = 'Sisa Stok: ' + produk.Stok + ' pcs';
+      
+      // Jika kolom Deskripsi tidak ada di sheet, hindari error dengan logika ini
+      const deskripsi = produk.Deskripsi ? produk.Deskripsi : "Deskripsi produk belum ditambahkan.";
+      document.getElementById('detail-deskripsi').innerText = deskripsi;
+      
+      // Arahkan tombol checkout
+      document.getElementById('btn-modal-pesan').setAttribute('onclick', `checkoutWA('${produk.ID_Produk}')`);
+
+      // Tampilkan Modal
+      document.getElementById('modal-detail').style.display = 'block';
+    }
+
+    function tutupDetail() {
+      document.getElementById('modal-detail').style.display = 'none';
+    }
+
+    // Menutup modal jika area di luar kotak putih diklik
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal-detail');
+      if (event.target == modal) tutupDetail();
+    }
+
+    function geserGambar(arah) {
+      indexGambarSaatIni += arah;
+      if (indexGambarSaatIni >= kumpulanGambar.length) indexGambarSaatIni = 0;
+      if (indexGambarSaatIni < 0) indexGambarSaatIni = kumpulanGambar.length - 1;
+      renderSlider();
+    }
+
+    function lompatKeGambar(idx) {
+      indexGambarSaatIni = idx;
+      renderSlider();
+    }
+
+    function renderSlider() {
+      let htmlImg = '';
+      let htmlDot = '';
+      
+      kumpulanGambar.forEach((url, i) => {
+        const statusAktif = (i === indexGambarSaatIni) ? 'aktif' : '';
+        htmlImg += `<img src="${url}" class="slider-img ${statusAktif}" onerror="this.src='https://via.placeholder.com/400x400?text=Gambar+Error'">`;
+        htmlDot += `<span class="dot ${statusAktif}" onclick="lompatKeGambar(${i})"></span>`;
+      });
+      
+      // Tampilkan tombol arah hanya jika gambar lebih dari 1
+      const tampilkanTombol = kumpulanGambar.length > 1 ? 'block' : 'none';
+      document.getElementById('btn-prev').style.display = tampilkanTombol;
+      document.getElementById('btn-next').style.display = tampilkanTombol;
+
+      document.getElementById('slider-wrapper').innerHTML = htmlImg;
+      document.getElementById('slider-dots').innerHTML = htmlDot;
+    }
+
+    // ================= FUNGSI CHECKOUT =================
+    function checkoutWA(idProduk) {
+      const produk = dataProdukGlobal.find(item => item.ID_Produk === idProduk);
+      const pesan = `Halo Admin DEINSA, saya mau pesan:\n\n` +
                     `*Nama Barang:* ${produk.Nama_Produk}\n` +
                     `*Kode SKU:* ${produk.ID_Produk}\n` +
                     `*Harga:* Rp ${parseInt(produk.Harga).toLocaleString('id-ID')}\n\n` +
-                    `Apakah stoknya masih tersedia untuk dikirim?`;
+                    `Bisa minta form pemesanannya?`;
 
-      const teksEncoded = encodeURIComponent(pesan);
-      const linkWA = `https://api.whatsapp.com/send?phone=${NOMOR_WA_ADMIN}&text=${teksEncoded}`;
-      
+      const linkWA = `https://api.whatsapp.com/send?phone=${NOMOR_WA_ADMIN}&text=${encodeURIComponent(pesan)}`;
       window.open(linkWA, '_blank');
     }
 
-    // Eksekusi awal
     muatKatalog();
   </script>
-
 </body>
 </html>
